@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <script src="../js/jquery-3.7.0.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <style>
+      .red {
+        color: red;
+      }
+    </style>
+    <script>
+      $(document).ready(function () {
+        function validHVT() {
+          var HVT = $("#txtHVT").val();
+          var regHVT = /(^[A-Z]{1}[a-z]*\s)*([A-Z]{1}[a-z]*){1}$/;
+          if (HVT.length == 0) {
+            $("#ALtxtHVT").html("Không được bỏ trống");
+            return false;
+          } else if (regHVT.test(HVT) && HVT.length >= 2) {
+            $("#ALtxtHVT").html("(*)");
+            return true;
+          } else {
+            $("#ALtxtHVT").html("Không hợp lệ");
+            return false;
+          }
+        }
+        $("#txtHVT").blur(validHVT);
+
+        function validSDT() {
+          var SDT = $("#txtSDT").val();
+          var regSDT = /^\d{10}$/;
+          if (SDT.length == 0) {
+            $("#ALtxtSDT").html("Không được bỏ trống");
+            return false;
+          } else if (regSDT.test(SDT)) {
+            $("#ALtxtSDT").html("(*)");
+            return true;
+          } else {
+            $("#ALtxtSDT").html("Không hợp lệ");
+            return false;
+          }
+        }
+        $("#txtSDT").blur(validSDT);
+
+        function validEmail() {
+          var Email = $("#txtEmail").val();
+          var regEmail = /^[A-Za-z0-9_\.]+@[A-Za-z0-9_\.]{3,}\.[A-Za-z]+$/;
+          if (Email.length == 0) {
+            $("#ALtxtEmail").html("Không được bỏ trống");
+            return false;
+          } else if (regEmail.test(Email)) {
+            $("#ALtxtEmail").html("(*)");
+            return true;
+          } else {
+            $("#ALtxtEmail").html("Không hợp lệ");
+            return false;
+          }
+        }
+        $("#txtEmail").blur(validEmail);
+        function validDC() {
+          var DC = $("#txtDC").val();
+          if (DC.length == 0) {
+            $("#ALtxtDC").html("Không được bỏ trống");
+            return false;
+          } else {
+            $("#ALtxtDC").html("(*)");
+            return true;
+          }
+        }
+        $("#txtDC").blur(validDC);
+        function validNam() {
+          var Nam = $("#txtNam").val();
+          var thisYear = new Date();
+
+          if (Nam.length == 0) {
+            $("#ALtxtNam").html("Không được bỏ trống");
+            return false;
+          } else if (Nam > thisYear.getFullYear()) {
+            $("#ALtxtNam").html("(*)");
+            return true;
+          } else {
+            $("#ALtxtNam").html("Năm dự định phải lớn hơn năm hiện tại");
+            return false;
+          }
+        }
+
+        $("#txtNam").blur(validNam);
+        function validForm() {
+          if (
+            validDC() &&
+            validEmail() &&
+            validHVT() &&
+            validNam() &&
+            validSDT()
+          ) {
+            addToTable();
+            $("#my_modal").modal("hide");
+          }
+        }
+
+        function addToTable() {
+          var HVT = $("#txtHVT").val()
+          var SDT = $("#txtSDT").val()
+          var Email = $("#txtEmail").val()
+          var DC = $("#txtDC").val()
+          var nam = $("#txtNam").val()
+          var DCtv = $("input[name = 'DC']:checked").val()
+          
+          var content = `<tr>
+                <td>${$('table tr').length}</td>
+                <td>${HVT}</td>
+                <td>${SDT}</td>
+                <td>${Email}</td>
+                <td>${DC}</td>
+
+                <td>${nam}</td>
+                <td>${DCtv}</td>
+              </tr>
+          `
+          $('table tbody').append(content);
+          return true
+        }
+        $("#btnSub").click (validForm);
+
+        $("#txtHVT");
+        $("#txtSDT");
+        $("#txtEmail");
+        $("#txtDC");
+        $("#txtNam");
+        $("#DC");
+        $("#btnSub");
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <img src="../img/banner.png" alt="" class="col-12" />
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <nav class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Hightlights</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Hoạt động</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Danh sách trường</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Ưu đãi</a>
+            </li>
+          </nav>
+          <button
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#my_modal"
+            type="button"
+          >
+            Đăng kí
+          </button>
+        </div>
+        <div class="col-9">
+          <table class="table table-light table-hover">
+            <thead class="thead-light">
+              <tr>
+                <th>STT</th>
+                <th>Họ Tên</th>
+                <th>Số điện thoại</th>
+                <th>Email</th>
+                <th>Địa chỉ</th>
+                <th>Năm</th>
+                <th>Địa điểm tư vấn</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <footer style="padding: 15px; background-color: aquamarine">
+        21023261-Nguyễn Văn Tiến-DHCNTT17A
+      </footer>
+    </div>
+    <div
+      id="my_modal"
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="my-modal-title"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="my-modal-title">
+              ĐĂNG KÍ THAM DỰ EDUUK MIỄN PHÍ
+            </h5>
+            <button class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="">
+              <div class="form-group">
+                <label for="txtHVT">Họ tên</label>
+                <input
+                  id="txtHVT"
+                  class="form-control"
+                  type="text"
+                  name=""
+                  placeholder="Họ tên"
+                />
+                <span class="red" id="ALtxtHVT">(*)</span>
+              </div>
+              <div class="form-group">
+                <label for="txtSDT">Số điện thoại</label>
+                <input
+                  id="txtSDT"
+                  class="form-control"
+                  type="number"
+                  name=""
+                  placeholder="Số điện thoại"
+                />
+                <span class="red" id="ALtxtSDT">(*)</span>
+              </div>
+              <div class="form-group">
+                <label for="txtEmail">Email</label>
+                <input
+                  id="txtEmail"
+                  class="form-control"
+                  type="text"
+                  name=""
+                  placeholder="Email"
+                />
+                <span class="red" id="ALtxtEmail">(*)</span>
+              </div>
+              <div class="form-group">
+                <label for="txtDC">Địa chỉ</label>
+                <input
+                  id="txtDC"
+                  class="form-control"
+                  type="text"
+                  name=""
+                  placeholder="Địa chỉ"
+                />
+                <span class="red" id="ALtxtDC">(*)</span>
+              </div>
+              <div class="form-group">
+                <label for="txtNam">Bạn định du học năm nào?</label>
+                <input
+                  id="txtNam"
+                  class="form-control"
+                  type="number"
+                  name=""
+                  placeholder="Bạn định du học năm nào"
+                />
+                <span class="red" id="ALtxtNam">(*)</span>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="DC"
+                    id=""
+                    value="Hà Nội"
+                  />
+                  Hà Nội
+                </label>
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="DC"
+                    id=""
+                    value="TPHCM"
+                  />
+                  TPHCM
+                </label>
+              </div>
+              <br />
+              <button type="button" name="" id="btnSub" class="btn btn-primary">
+                Đăng kí
+              </button>
+            </form>
+          </div>
+          <div class="modal-footer">21023261-Nguyễn Văn Tiến-DHCNTT17A</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
