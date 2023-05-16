@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <script src="../js/jquery-3.7.0.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <style>
+      span {
+        color: red;
+        font-style: italic;
+      }
+    </style>
+    <script>
+      $(document).ready(function () {
+        function validSerial() {
+          var serial = $("#txtSerial").val();
+          let reg = /^[a-zA-Z0-9-_]+$/;
+
+          if (serial.length == 0) {
+            $("#ALtxtSerial").html("Bắt buộc nhập");
+            return false;
+          } else if (serial.length < 6) {
+            $("#ALtxtSerial").html("Độ dài tối tiểu là 6");
+            return false;
+          } else if (reg.test(serial)) {
+            $("#ALtxtSerial").html("");
+            return true;
+          } else {
+            $("#ALtxtSerial").html("Không hợp lệ");
+            return false;
+          }
+        }
+        $("#txtSerial").blur(validSerial);
+        function validMoTa() {
+          if ($("#txtMoTa").val().length == 0) {
+            $("#ALtxtMoTa").html("Bắt buộc nhập");
+            return false;
+          } else {
+            $("#ALtxtMoTa").html("");
+            return true;
+          }
+        }
+        $("#txtMoTa").blur(validMoTa);
+        function validTrongLuong() {
+          var trongLuong = $("#txtTrongLuong").val();
+          if (trongLuong.length == 0) {
+            $("#ALtxtTrongLuong").html("Bắt buộc nhập");
+            return false;
+          } else if (trongLuong <= 0) {
+            $("#ALtxtTrongLuong").html("Phải lớn hơn 0");
+            return false;
+          } else {
+            $("#ALtxtTrongLuong").html("*");
+            calcValue();
+
+            return true;
+          }
+        }
+        $("#txtTrongLuong").blur(validTrongLuong);
+        function calcValue() {
+          var trongLuong = parseFloat($("#txtTrongLuong").val());
+          var value = 0;
+          if (trongLuong <= 20) {
+            value = trongLuong * 35000;
+          } else if (trongLuong <= 50) {
+            value = 20*35000+(trongLuong-20) * 30000;
+          } else {
+            value = 20*35000+30*30000+(trongLuong-50) * 15000;
+          }
+          $("#txtChiPhi").val(value);
+          return true;
+        }
+        function validForm() {
+          if (validSerial() && validMoTa() && validTrongLuong()) {
+            addToTable();
+            $("#my_modal").modal("hide");
+          } else {
+          }
+        }
+        $("#sub_btn").click(validForm);
+        function addToTable() {
+          var Itable = $("table").html();
+          var Iserial = $("#txtSerial").val();
+          var ImoTa = $("#txtMoTa").val();
+          var IhinhAnh = $("#txtHinhAnh").val();
+          var ItrongLuong = $("#txtTrongLuong").val();
+          var IchiPhi = $("#txtChiPhi").val();
+          var content = `<tr>
+                            <td>${$("table tr").length}</td>
+                            <td>${Iserial}</td>
+                            <td>${ImoTa}</td>
+                            <td><IMG src="${IhinhAnh}"></td>
+                            <td>${ItrongLuong}</td>
+                            <td>${IchiPhi}</td>
+                        </tr>`;
+          $("table tbody").append(content);
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row" style="background-color: yellow">
+        <img src="../img/logo7.png" class="col-3" alt="" srcset="" />
+        <nav class="nav col-9">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Trang chủ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Giới thiệu</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Dịch vụ</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="#"
+              data-toggle="modal"
+              data-target="#my_modal"
+              >Ký gửi hàng hóa</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Liên hệ</a>
+          </li>
+        </nav>
+      </div>
+      <div class="row">
+        <div class="col-8"><\form></div>
+        <div class="col-4">
+          <b>Qui định thanh toán</b>
+          <ul>
+            <li>Khách cọc từ 70% - 100% số tiền của đơn hàng.</li>
+            <li>Hàng về sau 24-48 tiếng kể từ khi kho Trung Quốc ký nhận.</li>
+            <li>
+              Shop sẽ thanh lý đơn hàng nếu sau 1 tuần khách hàng không thanh
+              toán tiền nhận hàng.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <h3 style="color: rgb(5, 179, 248)">Danh sách kiện hàng hóa gửi</h3>
+      <table class="table table-light table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>STT</th>
+            <th>Số serial</th>
+            <th>Mô tả kiện hàng</th>
+            <th>Hình ảnh</th>
+            <th>Trọng lượng (kg)</th>
+            <th>Phí vận chuyển (VND)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>OZMO-600</td>
+            <td>Robot Hút Bụi Lau Nhà Dreame D9 Pro</td>
+            <td>..\image\Pro9.PNG</td>
+            <td>3.5</td>
+            <td>122500</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>SMS25EI00G</td>
+            <td>Máy rửa chén độc lập Bosch TGB - Serie 2</td>
+            <td>..\image\Bosch TGB.SMS25EI00G.PNG</td>
+            <td>48.25</td>
+            <td>1447500</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td></td>
+            <td>Thùng Cherry</td>
+            <td>..\image\cherry.PNG</td>
+            <td>55kg</td>
+            <td>825000</td>
+          </tr>
+        </tbody>
+      </table>
+      <footer
+        style="background-color: yellow; padding: 20px 0"
+        class="text-center"
+      >
+        Mã số: 21023261 - Họ Tên: Nguyễn Văn Tiến
+      </footer>
+    </div>
+    <div
+      id="my_modal"
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="my-modal-title"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="my-modal-title">
+              Thông tin kiện hàng hoá gửi
+            </h5>
+            <button class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form class="form" method="get" action="">
+              <div class="form-group row">
+                <label class="col-4" for="txtSerial">Số serial:</label>
+                <div class="col-8">
+                  <input
+                    id="txtSerial"
+                    class="form-control"
+                    type="text"
+                    name=""
+                  />
+                  <span id="ALtxtSerial"
+                    >Số serial in trên kiện hàng nếu có</span
+                  >
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-4" for="txtMoTa">Mô tả kiện hàng:</label>
+                <div class="col-8">
+                  <input
+                    id="txtMoTa"
+                    class="form-control"
+                    type="text"
+                    name=""
+                  />
+                  <span id="ALtxtMoTa">*</span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-4" for="my-input">Hình ảnh:</label>
+                <div class="col-8">
+                  <input
+                    id="txtHinhAnh"
+                    class="form-control"
+                    type="file"
+                    name=""
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-4" for="txtTrongLuong"
+                  >Trọng lượng (kg):</label
+                >
+                <div class="col-8">
+                  <input
+                    id="txtTrongLuong"
+                    class="form-control"
+                    type="number"
+                    name=""
+                  />
+                  <span id="ALtxtTrongLuong">*</span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-4" for="my-input"
+                  >Chi phí vận chuyển (VND):</label
+                >
+                <div class="col-8">
+                  <input
+                    id="txtChiPhi"
+                    class="form-control"
+                    type="number"
+                    disabled
+                    name=""
+                  />
+                </div>
+              </div>
+            </form>
+            <button
+              class="btn btn-primary"
+              id="sub_btn"
+              class="btn btn-light"
+              type="button"
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
